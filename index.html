@@ -9,8 +9,8 @@
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
     <script type="text/javascript">
         (function() {
-            // Palitan mo ito ng iyong EmailJS Public Key
-            emailjs.init("YOUR_PUBLIC_KEY");
+            // Nilagay na ang iyong EmailJS Public Key
+            emailjs.init("gDocFvy6gbv--Yhji");
         })();
     </script>
 
@@ -161,7 +161,7 @@
         const mainImage = document.getElementById('main-image');
 
         function sendEmailNotification(msg, dateTimeVal) {
-            // Nilagay na natin ang Service ID mo mula sa screenshot
+            // Nilagay na natin ang Service ID at Public Key. Palitan na lang ang "YOUR_TEMPLATE_ID" ng iyong EmailJS Template ID.
             emailjs.send("service_kn8szyb", "YOUR_TEMPLATE_ID", {
                 message: msg,
                 date_time: dateTimeVal || "N/A"
