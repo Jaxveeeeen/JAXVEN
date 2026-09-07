@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="tl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adjustable Container with Changing Images</title>
+
+    <!-- EmailJS SDK -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    <script type="text/javascript">
+        (function() {
+            // Palitan mo ito ng iyong EmailJS Public Key
+            emailjs.init("YOUR_PUBLIC_KEY");
+        })();
+    </script>
+
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #f4f4f4;
+            font-family: Arial, sans-serif;
+            overflow: hidden;
+        }
+
+        .wrapper {
+            position: relative;
+            top: 0px;   
+            left: 0px;  
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .top-outside-content {
+            margin-bottom: 25px; 
+            text-align: center;
+            width: 100%;
+            display: flex;
+            justify-content: center; 
+        }
+
+        .top-outside-content img {
+            width: 150px; 
+            height: auto; 
+            object-fit: contain; 
+            border-radius: 0; 
+            border: none; 
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+            margin: 0 auto;
+            transition: opacity 0.3s ease-in-out;
+        }
+
+        .container {
+            width: 400px;
+            padding: 30px;
+            background-color: white;
+            border: 6px solid #4b5320;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            box-sizing: border-box;
+            min-height: 200px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .container p {
+            color: #333;
+            font-size: 16px;
+            margin-top: 0; 
+            margin-bottom: 25px;
+            line-height: 1.5;
+            font-weight: bold;
+        }
+
+        .button-group {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            font-size: 14px;
+            font-weight: bold;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.2s, top 0.2s ease, left 0.2s ease, transform 0.2s ease;
+        }
+
+        .btn-primary, .btn-secondary {
+            background-color: #4b5320;
+            color: white;
+        }
+
+        .btn-primary:hover, .btn-secondary:hover {
+            background-color: #3a4019;
+        }
+
+        .date-picker-group {
+            display: none; 
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .date-picker-group input[type="datetime-local"] {
+            padding: 10px;
+            font-size: 14px;
+            border: 2px solid #4b5320;
+            border-radius: 5px;
+            width: 80%;
+            font-family: Arial, sans-serif;
+            outline: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="wrapper">
+
+        <div class="top-outside-content">
+            <img src="Pictures/cutie.png" id="main-image" alt="Character Image">
+        </div>
+
+        <div class="container">
+            <p id="question-text">Hi, Miss! Are you free this coming Sunday?</p>
+            
+            <div class="button-group" id="main-buttons">
+                <button class="btn btn-primary" id="yes-btn">Yes</button>
+                <button class="btn btn-secondary" id="no-btn">Hindi eh</button>
+            </div>
+
+            <div class="date-picker-group" id="date-picker-container">
+                <input type="datetime-local" id="date-input">
+                <button class="btn btn-primary" id="submit-date-btn">Submit Date</button>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        let step = 1; 
+        let noClickCount = 0; 
+        let selectedCustomDate = "";
+
+        const questionText = document.getElementById('question-text');
+        const mainButtons = document.getElementById('main-buttons');
+        const yesBtn = document.getElementById('yes-btn');
+        const noBtn = document.getElementById('no-btn');
+        
+        const datePickerContainer = document.getElementById('date-picker-container');
+        const dateInput = document.getElementById('date-input');
+        const submitDateBtn = document.getElementById('submit-date-btn');
+        const mainImage = document.getElementById('main-image');
+
+        function sendEmailNotification(msg, dateTimeVal) {
+            // Nilagay na natin ang Service ID mo mula sa screenshot
+            emailjs.send("service_kn8szyb", "YOUR_TEMPLATE_ID", {
+                message: msg,
+                date_time: dateTimeVal || "N/A"
+            }).then(function(response) {
+               console.log("Email sent successfully!", response.status, response.text);
+            }, function(error) {
+               console.log("Failed to send email...", error);
+            });
+        }
+
+        yesBtn.addEventListener('click', function() {
+            if (step === 1) {
+                askMatchaDate();
+            } else if (step === 2) {
+                questionText.textContent = "SALAMAT G!!! SEEEEEEE YOUUUU! AND LET’S TALK ABOUT WHERE YOU WANT TO GO AFTER! 🍵💚";
+                mainButtons.style.display = 'none';
+                noBtn.style.display = 'none'; 
+                mainImage.src = "Pictures/smile.jpg"; 
+
+                let finalDate = selectedCustomDate ? selectedCustomDate : "This coming Sunday (Default)";
+                sendEmailNotification("NAG-YES SIYA SA MATCHA DATE! 🎉", finalDate);
+            }
+        });
+
+        noBtn.addEventListener('click', function() {
+            if (step === 1) {
+                questionText.textContent = "Kelan ka free??";
+                mainButtons.style.display = 'none'; 
+                datePickerContainer.style.display = 'flex'; 
+                mainImage.src = "Pictures/cutie.png"; 
+            } else if (step === 2) {
+                noClickCount++;
+                moveNoButton();
+
+                if (noClickCount > 5) {
+                    let scaleValue = 1 - ((noClickCount - 5) * 0.2); 
+                    if (scaleValue <= 0) {
+                        noBtn.style.display = 'none'; 
+                    } else {
+                        noBtn.style.transform = `scale(${scaleValue})`;
+                    }
+                }
+            }
+        });
+
+        function moveNoButton() {
+            noBtn.style.position = 'fixed';
+
+            const maxX = window.innerWidth - noBtn.offsetWidth - 20;
+            const maxY = window.innerHeight - noBtn.offsetHeight - 20;
+
+            const randomX = Math.max(20, Math.floor(Math.random() * maxX));
+            const randomY = Math.max(20, Math.floor(Math.random() * maxY));
+
+            noBtn.style.left = randomX + 'px';
+            noBtn.style.top = randomY + 'px';
+        }
+
+        submitDateBtn.addEventListener('click', function() {
+            if (dateInput.value === "") {
+                alert("Pumili ka muna ng DATE juskopo hehehehee");
+                return;
+            }
+            
+            selectedCustomDate = dateInput.value;
+            sendEmailNotification("Nag-submit siya ng preferred date/time!", selectedCustomDate);
+
+            datePickerContainer.style.display = 'none'; 
+            askMatchaDate();
+        });
+
+        function askMatchaDate() {
+            questionText.textContent = "Would you like to go out with me? Matcha Date 🍵";
+            mainButtons.style.display = 'flex'; 
+            yesBtn.textContent = "Yes";
+            noBtn.textContent = "No";
+            noClickCount = 0; 
+            noBtn.style.transform = 'scale(1)'; 
+            step = 2; 
+            mainImage.src = "Pictures/flower.jpg"; 
+        }
+    </script>
+
+</body>
+</html>
