@@ -9,7 +9,6 @@
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
     <script type="text/javascript">
         (function() {
-            // Nakalagay na ang iyong EmailJS Public Key
             emailjs.init("gDocFvy6gbv--Yhji");
         })();
     </script>
@@ -161,10 +160,10 @@
         const mainImage = document.getElementById('main-image');
 
         function sendEmailNotification(msg, dateTimeVal) {
-            // Kumpleto na ang Service ID at Template ID dito
+            // Naka-match na ngayon sa {{message}} at {{time}} ng EmailJS template mo
             emailjs.send("service_kn8szyb", "template_11b35w8", {
                 message: msg,
-                date_time: dateTimeVal || "N/A"
+                time: dateTimeVal || "N/A"
             }).then(function(response) {
                console.log("Email sent successfully!", response.status, response.text);
             }, function(error) {
