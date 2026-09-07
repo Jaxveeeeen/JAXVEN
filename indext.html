@@ -126,7 +126,7 @@
     <div class="wrapper">
 
         <div class="top-outside-content">
-            <img src="Pictures/cutie.png" id="main-image" alt="Character Image">
+            <img src="cutie.png" id="main-image" alt="Character Image">
         </div>
 
         <div class="container">
@@ -179,7 +179,7 @@
                 questionText.textContent = "SALAMAT G!!! SEEEEEEE YOUUUU! AND LET’S TALK ABOUT WHERE YOU WANT TO GO AFTER! 🍵💚";
                 mainButtons.style.display = 'none';
                 noBtn.style.display = 'none'; 
-                mainImage.src = "Pictures/smile.jpg"; 
+                mainImage.src = "smile.jpg"; 
 
                 let finalDate = selectedCustomDate ? selectedCustomDate : "This coming Sunday (Default)";
                 sendEmailNotification("NAG-YES SIYA SA MATCHA DATE! 🎉", finalDate);
@@ -191,7 +191,7 @@
                 questionText.textContent = "Kelan ka free??";
                 mainButtons.style.display = 'none'; 
                 datePickerContainer.style.display = 'flex'; 
-                mainImage.src = "Pictures/cutie.png"; 
+                mainImage.src = "cutie.png"; 
             } else if (step === 2) {
                 noClickCount++;
                 moveNoButton();
@@ -241,7 +241,7 @@
             noClickCount = 0; 
             noBtn.style.transform = 'scale(1)'; 
             step = 2; 
-            mainImage.src = "Pictures/flower.jpg"; 
+            mainImage.src = "flower.jpg"; 
         }
     </script>
 
