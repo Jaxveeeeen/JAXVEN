@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Adjustable Container with Changing Images</title>
+    <title>Matcha Date Surprise</title>
 
     <!-- EmailJS SDK -->
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
     <script type="text/javascript">
         (function() {
-            // Nilagay na ang iyong EmailJS Public Key
+            // Nakalagay na ang iyong EmailJS Public Key
             emailjs.init("gDocFvy6gbv--Yhji");
         })();
     </script>
@@ -161,8 +161,8 @@
         const mainImage = document.getElementById('main-image');
 
         function sendEmailNotification(msg, dateTimeVal) {
-            // Nilagay na natin ang Service ID at Public Key. Palitan na lang ang "YOUR_TEMPLATE_ID" ng iyong EmailJS Template ID.
-            emailjs.send("service_kn8szyb", "YOUR_TEMPLATE_ID", {
+            // Kumpleto na ang Service ID at Template ID dito
+            emailjs.send("service_kn8szyb", "template_11b35w8", {
                 message: msg,
                 date_time: dateTimeVal || "N/A"
             }).then(function(response) {
